@@ -90,3 +90,42 @@ cal_eval <- kuenm_ceval(path = out_dir, occ.joint = occ_joint, occ.tra = occ_tra
                         rand.percent = rand_percent, iterations = iterations, kept = kept,
                         selection = selection, parallel.proc = paral_proc)
 ```
+
+<br>
+
+### Final model creation
+
+After selecting parametrizations that produce best models, the next step is to create the final models, and if needed transfer them to other environmental data sets (e.g., to other time periods or other geographic regions). The function help is called via this code:
+
+```{r, eval=FALSE}
+help(kuenm_mod)
+```
+
+<br>
+
+For preparing the arguments for this function use the following chunk of code.
+
+```{r, eval=FALSE}
+batch_fin <- "Final_models"
+mod_dir <- "Final_Models"
+rep_n <- 10
+rep_type <- "Bootstrap"
+jackknife <- TRUE
+out_format <- "logistic"
+project <- FALSE
+wait1 <- FALSE
+run1 <- TRUE
+args <- NULL
+# Again, some of the variables used here as arguments were already created for the previous functions
+```
+
+<br>
+
+The kuenm_mod function has the following syntax:
+
+```{r, eval=FALSE}
+kuenm_mod(occ.joint = occ_joint, M.var.dir = M_var_dir, out.eval = out_eval, batch = batch_fin,
+          rep.n = rep_n, rep.type = rep_type, jackknife = jackknife, out.dir = mod_dir,
+          out.format = out_format, project = project, maxent.path = maxent_path,
+          args = args, wait = wait1, run = run1)
+```
