@@ -1,3 +1,10 @@
+################
+# Example of model calibration using kuenm
+# Marlon E. Cobos, manubio13@gmail.com 
+################
+
+#########
+# Occurrence data
 library(rgbif)
 
 # new directory
@@ -28,16 +35,16 @@ occurrences <- occ[!is.na(occ$decimalLatitude) & !is.na(occ$decimalLongitude),
 dir.create("data")
 write.csv(occurrences, "data/cmex_all.csv", row.names = FALSE)
 
-# Excluding records with no coordinates
+# excluding records with no coordinates
 occurrences <- occurrences[!is.na(occurrences$decimalLongitude) | !is.na(occurrences$decimalLatitude), ]
 
-# Excluding duplicates
+# excluding duplicates
 occurrences$code <-  paste(occurrences$name, occurrences$decimalLongitude, # concatenating columns of interest
                            occurrences$decimalLatitude, sep = "_")
 
 occurrences <- occurrences[!duplicated(occurrences$code), 1:4] # erasing duplicates
 
-# Excluding records with (0, 0) coordinates
+# excluding records with (0, 0) coordinates
 occurrences <- occurrences[occurrences$decimalLongitude != 0 & occurrences$decimalLatitude != 0, 1:3]
 
 # saving the new set of occurrences 
@@ -51,7 +58,7 @@ thin(occurrences, lat.col = "decimalLatitude", long.col = "decimalLongitude", sp
      write.log.file = FALSE, verbose = TRUE)
 
 
-# training and testing
+# training and testing data splitting. randomly 75% for training and 25% for testing
 dir.create("C_mexicanus")
 occ_thinn <- read.csv("data/cmex_thin1.csv")
 occ_thinn$name <- gsub(" ", "_", occ_thinn$name)
@@ -71,13 +78,15 @@ write.csv(train, "C_mexicanus/cmex_train.csv", row.names = FALSE)
 write.csv(test, "C_mexicanus/cmex_test.csv", row.names = FALSE)
 
 
-#######
+
+#########
 # Bioclimatic layers
 library(raster)
 wc2.5min <- getData(name = "worldclim", var = "bio", res = 2.5)
 
 
-#######
+
+#########
 # Calibration area, M, or buffered points
 library(sp)
 library(rgeos)
@@ -116,7 +125,9 @@ dir.create("masked_variables")
 writeRaster(sel_var, filename = "masked_variables/bio.tif", format = "GTiff", 
             bylayer = TRUE, suffix = nums)
 
-#######
+
+
+#########
 # PCA of variables for models
 source("https://raw.githubusercontent.com/marlonecobos/ENM_manuals/master/Variables_processing/kuenm_rpca.R")
 
@@ -132,7 +143,9 @@ pcs <- kuenm_rpca(vars.folder = var_folder, in.format = in_format, out.format = 
                   n.pcs = n_pcs, out.dir = out_folder, return.in = TRUE)
 
 
-#######
+
+
+#########
 # Organizing variables for calibration
 ## M in C_mexicanus folder
 dir.create("C_mexicanus/M_variables")
