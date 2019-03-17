@@ -1,7 +1,11 @@
 ################
 # Example of model calibration using kuenm
+# Getting data 
 # Marlon E. Cobos, manubio13@gmail.com 
 ################
+
+#########
+# See repository https://github.com/marlonecobos/MNE_Curso_pract_calibration
 
 #########
 # Occurrence data
