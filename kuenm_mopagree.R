@@ -130,7 +130,7 @@ kuenm_mopagree <- function(mop.dir, in.format = "GTiff", out.format = "GTiff", c
       curr <- regmatches(setses, cur)
       curre <- unlist(curr)
       
-      to_cur <- paste0(out.dir, "/", mopin, "_",
+      to_cur <- paste0(out.dir, "/", sets[i], "/", mopin, "_",
                        gsub(paste0(".*", current), current, curre))
       file.copy(from = curre, to =  to_cur)
       
@@ -185,7 +185,7 @@ kuenm_mopagree <- function(mop.dir, in.format = "GTiff", out.format = "GTiff", c
         a[] <- apply(b, 1, sum)
         
         ### Writing files
-        mopnams <- paste(out.dir, paste0(mopin, septi, time.periods[j],
+        mopnams <- paste(out.dir, sets[i], paste0(mopin, septi, time.periods[j],
                                              sepem, emi.scenarios[k], "_agreement", format1), sep = "/")
         
         raster::writeRaster(a, filename = mopnams, format = out.format)
